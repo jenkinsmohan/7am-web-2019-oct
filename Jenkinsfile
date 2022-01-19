@@ -2,7 +2,9 @@ pipeline{
     stages{
         stage('SCM Checkout'){
             steps{
-                git 'https://github.com/jenkinsmohan/7am-web-2019-oct'
+                git credentials: 'jenkinsmohan',
+                url: 'https://github.com/jenkinsmohan/7am-web-2019-oct',
+                branch: 'master'
             }
         }
         stage('Maven Build'){
