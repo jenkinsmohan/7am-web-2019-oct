@@ -10,6 +10,17 @@ pipeline{
                 sh 'mvn clean package'
             }
         }
+        stage('Nexus upload'){
+            steps{
+                sh 'mvn deploy'
+            }
+        }
+
+        stage('Deploy dev'){
+            steps{
+                sh 'ansible-playbook -i dev.inv tomcat-deploy.yml'
+            }
+        }
         stage('tomcat dev'){
             steps{
                 sshagent(['tomcat-dev']) {
