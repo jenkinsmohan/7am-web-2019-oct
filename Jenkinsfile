@@ -1,37 +1,13 @@
 pipeline{
-    agent any
-    environment {
-      PATH = "${PATH}:${tool name: 'maven3', type: 'maven'}/bin"
+    parameters {
+        run description: 'Choose name', filter: 'ALL', name: 'name', projectName: 'Hari'
+        choice choices: ['Bangalore', 'Pune', 'Delhi', 'Noida'], description: 'Choose your location', name: 'location'
     }
-
+    agent any
     stages{
-        stage('Maven Build'){
-            steps{
-                sh 'mvn clean package'
-            }
-        }
-        stage('Nexus upload'){
-            steps{
-                sh returnStatus: true, script: 'mvn deploy'
-            }
-        }
-
-        stage('Deploy dev'){
-            steps{
-                sh 'ansible-playbook -i dev.inv tomcat-deploy.yml'
-            }
-        }
-        stage('tomcat dev'){
-            steps{
-                sshagent(['tomcat-dev']) {
-                // stop tomcat
-                sh "ssh -o StrictHostKeyChecking=no ec2-user@44.202.133.126 /opt/tomcat9/bin/shutdown.sh"
-                //copy war file
-                sh "scp target/*.war ec2-user@44.202.133.126 /opt/tomcat9/webapps/devops"
-                //start tomcat
-                sh "ssh -o StrictHostKeyChecking=no ec2-user@44.202.133.126 /opt/tomcat9/bin/shutdownstartup.sh"
-            }
-            }
+        stage('Hello'){
+            echo "Your name is {params.name}"
+            echo "your location is {params.location}"
         }
     }
 }
