@@ -1,17 +1,16 @@
 pipeline{
     parameters {
-        run description: 'Choose name', filter: 'ALL', name: 'name', projectName: 'Hari'
-        choice choices: ['Bangalore', 'Pune', 'Delhi', 'Noida'], description: 'Choose your location', name: 'location'
+        string defaultValue: 'Hari', description: 'Choose name', name: 'name', trim: false
+        choice choices: ['Banglore', 'Pune', 'Delhi', 'Noida'], description: 'Choose your location', name: 'locatioion'
     }
+
     agent any
     stages{
         stage('Hello'){
             steps{
-                echo "Your name is {params.name}"
-                echo "your location is {params.location}"
+                echo "Your name is ${params.name}"
+                echo "Your location is ${params.locatioion}"
             }
         }
     }
 }
-
-
